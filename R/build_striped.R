@@ -6,7 +6,7 @@ build_striped <- function(data) {
   ) %>%
     dplyr::mutate(
       xmax = dplyr::coalesce(xmax, data$xmax),
-      colour = ifelse(dplyr::row_number() %% 2 == 0, lightpink, darkpink),
+      fill = ifelse(dplyr::row_number() %% 2 == 0, lightpink, darkpink),
       geom = "rect",
       ymin = data$ymin,
       ymax = data$ymax
@@ -15,7 +15,7 @@ build_striped <- function(data) {
   if (sample(c(TRUE, FALSE), 1)) {
     df <- df %>%
       dplyr::mutate(
-        colour = ifelse(!dplyr::row_number() %% 2 == 0, lightpink, darkpink)
+        fill = ifelse(!dplyr::row_number() %% 2 == 0, lightpink, darkpink)
       )
   }
 

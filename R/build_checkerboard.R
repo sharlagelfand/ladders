@@ -21,7 +21,7 @@ build_checkerboard <- function(data) {
     ) %>%
     dplyr::ungroup() %>%
     dplyr::filter(!is.na(ymax)) %>%
-    dplyr::mutate(colour = ifelse(fill, darkpink, lightpink)) %>%
-    dplyr::select(xmin, xmax, ymin, ymax, colour) %>%
+    dplyr::mutate(fill = ifelse(fill, darkpink, lightpink)) %>%
+    dplyr::select(xmin, xmax, ymin, ymax, fill) %>%
     dplyr::mutate(geom = "rect")
 }

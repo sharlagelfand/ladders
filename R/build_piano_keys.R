@@ -16,6 +16,14 @@ build_piano_keys <- function(data) {
     dplyr::filter(noise_ntile %in% sample(1:10, 9)) %>%
     dplyr::select(-x, -y, -noise)
 
+  tones_rect <- tones %>%
+    dplyr::mutate(
+      xmax = dplyr::lead(xmax),
+      xmax = dplyr::coalesce(xmax, data$xmax),
+      fill = lightpink,
+      geom = "rect"
+    )
+
   intervals <- tones %>%
     dplyr::mutate(x_prev = dplyr::lag(xmin), x_next = dplyr::lead(xmin)) %>%
     dplyr::filter(noise_ntile %in% sample(1:10, 3)) %>%
@@ -27,13 +35,17 @@ build_piano_keys <- function(data) {
       xmax = xmin + x_size * 2,
       ymin = data$ymax - (data$ymax - data$ymin) * 0.4,
       ymax = data$ymax,
-      colour = lightpink
+      fill = lightpink,
+      colour = darkpink
     ) %>%
-    dplyr::select(xmin, xmax, ymin, ymax, geom, colour)
+    dplyr::select(xmin, xmax, ymin, ymax, geom, fill, colour) %>%
+    dplyr::mutate(order = 2)
 
   dplyr::bind_rows(
     tones %>%
       dplyr::filter(!dplyr::row_number() %in% c(1, dplyr::n())),
+    tones_rect,
     intervals
-  )
+  ) %>%
+    dplyr::select(-noise_ntile)
 }

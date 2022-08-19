@@ -36,13 +36,17 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
     })
 
   ggplot2::ggplot() +
+    ggplot2::geom_rect(
+      data = options_df %>% dplyr::filter(geom == "rect", is.na(order)),
+      ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill, colour = colour)
+    ) +
     ggplot2::geom_segment(
       data = options_df %>% dplyr::filter(geom == "segment"),
       ggplot2::aes(x = xmin, xend = xmax, y = ymin, yend = ymax, colour = colour)
     ) +
     ggplot2::geom_rect(
-      data = options_df %>% dplyr::filter(geom == "rect"),
-      ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = colour)
+      data = options_df %>% dplyr::filter(geom == "rect", !is.na(order)),
+      ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill, colour = colour)
     ) +
     ggplot2::geom_rect(
       data = outline_df,
