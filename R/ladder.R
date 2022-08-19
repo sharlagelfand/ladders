@@ -19,9 +19,7 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
     generate_noise("perlin", 0.9) %>%
     dplyr::select(-x, -y, -height) %>%
     option_from_noise(options = c(
-      "striped", "piano keys",
-      # "bricks",
-      "checkerboard"
+      "striped", "piano keys", "bricks", "checkerboard"
     ))
 
   options_df <- outline_df %>%
@@ -30,7 +28,8 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
       switch(data[["option"]],
         "striped" = build_striped(data),
         "piano keys" = build_piano_keys(data),
-        "checkerboard" = build_checkerboard(data)
+        "checkerboard" = build_checkerboard(data),
+        "bricks" = build_bricks(data)
       ) %>%
         dplyr::mutate(option = data[["option"]])
     })

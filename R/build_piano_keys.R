@@ -9,20 +9,23 @@ build_piano_keys <- function(data) {
       ymin = data$ymin,
       ymax = data$ymax,
       colour = darkpink
-    ) %>%
-    dplyr::mutate(x = xmin, y = xmax) %>%
-    generate_noise("simplex", 1) %>%
-    dplyr::mutate(noise_ntile = dplyr::ntile(noise, 10)) %>%
-    dplyr::filter(noise_ntile %in% sample(1:10, 9)) %>%
-    dplyr::select(-x, -y, -noise)
+    )
 
   tones_rect <- tones %>%
     dplyr::mutate(
       xmax = dplyr::lead(xmax),
       xmax = dplyr::coalesce(xmax, data$xmax),
       fill = lightpink,
+      colour = NA,
       geom = "rect"
     )
+
+  tones <- tones %>%
+    dplyr::mutate(x = xmin, y = xmax) %>%
+    generate_noise("simplex", 1) %>%
+    dplyr::mutate(noise_ntile = dplyr::ntile(noise, 10)) %>%
+    dplyr::filter(noise_ntile %in% sample(1:10, 9)) %>%
+    dplyr::select(-x, -y, -noise)
 
   intervals <- tones %>%
     dplyr::mutate(x_prev = dplyr::lag(xmin), x_next = dplyr::lead(xmin)) %>%
