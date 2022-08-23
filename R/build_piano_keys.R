@@ -1,7 +1,6 @@
 #' @export
 build_piano_keys <- function(data, palette, palette_style) {
-
-  if (palette_style == "mono"){
+  if (palette_style == "mono") {
     tone_colour <- interval_colour <- palette
     tone_outline <- interval_outline <- "black"
   } else if (palette_style == "duo") {
@@ -67,14 +66,25 @@ build_piano_keys <- function(data, palette, palette_style) {
       ymin = data$ymax - (data$ymax - data$ymin) * 0.4,
       ymax = data$ymax,
       fill = interval_colour,
-      colour = interval_outline
+      colour = NA
     ) %>%
     dplyr::select(xmin, xmax, ymin, ymax, geom, fill, colour) %>%
     dplyr::mutate(order = 2)
 
+  tones_segment <- dplyr::bind_rows(
+    intervals %>% dplyr::select(xmin, ymin, ymax, order) %>% dplyr::mutate(xmax = xmin),
+    intervals %>% dplyr::select(xmax, ymin, ymax, order) %>% dplyr::mutate(xmin = xmax),
+    intervals %>% dplyr::select(xmax, xmin, ymin, order) %>% dplyr::mutate(ymax = ymin),
+  ) %>%
+    dplyr::mutate(
+      geom = "segment",
+      colour = interval_outline
+    )
+
   dplyr::bind_rows(
     tones %>%
       dplyr::filter(!dplyr::row_number() %in% c(1, dplyr::n())),
+    tones_segment,
     tones_rect,
     intervals
   ) %>%
