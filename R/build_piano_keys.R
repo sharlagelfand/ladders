@@ -3,6 +3,10 @@ build_piano_keys <- function(data, palette, palette_style) {
   if (palette_style == "mono") {
     tone_colour <- interval_colour <- palette
     tone_outline <- interval_outline <- "black"
+
+    if (true_or_false()) {
+      interval_colour <- "black"
+    }
   } else if (palette_style == "duo") {
     style <- sample(c("solid intervals", "outline intervals", "colour tones"), 1)
 

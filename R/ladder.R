@@ -28,7 +28,7 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
   palette_style <- sample(c("mono", "duo"), 1)
 
   palette <- switch(palette_style,
-    mono = sample(palette, 1),
+    mono = sample(palette, 1)[[1]],
     duo = sample(palette, 2),
     multi = palette
   )
