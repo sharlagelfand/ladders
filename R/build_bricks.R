@@ -20,9 +20,14 @@ build_bricks <- function(data) {
       across(
         c(xmin, xmax),
         function(x) {
-          ifelse(y_rank %% 2 == 0, xmin + x_size / 2, x)
+          ifelse(y_rank %% 2 == 0, x + x_size / 2, x)
         }
       )
+    ) %>%
+    dplyr::filter(
+      !(
+        (xmin < data[["xmin"]] & xmax < data[["xmin"]]) |
+          (xmin > data[["xmax"]] & xmax > data[["xmax"]]))
     ) %>%
     # Trim excess, e.g < xmin or > xmax
     dplyr::mutate(
