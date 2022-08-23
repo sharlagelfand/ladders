@@ -8,7 +8,7 @@ build_bricks <- function(data) {
   # Add excess for shifting x on odd rows
   xmin <- seq(data[["xmin"]] - x_size, data[["xmax"]] + x_size, by = x_size)
 
-  df <- tidyr::crossing(
+  rect <- tidyr::crossing(
     xmin = xmin,
     ymin = ymin[["ymin"]]
   ) %>%
@@ -36,9 +36,35 @@ build_bricks <- function(data) {
     ) %>%
     dplyr::mutate(
       fill = lightpink,
-      colour = darkpink,
+      colour = NA_character_,
       geom = "rect"
     )
 
-  df
+  segment_horizontal <- tidyr::expand_grid(
+    ymin = ymin %>%
+      dplyr::filter(y_rank != 1) %>%
+      dplyr::pull(ymin),
+    xmin = data[["xmin"]],
+    xmax = data[["xmax"]]
+  ) %>%
+    dplyr::mutate(ymax = ymin)
+
+  segment_vertical <- rect %>%
+    dplyr::select(xmin, ymin, ymax) %>%
+    dplyr::mutate(xmax = xmin) %>%
+    dplyr::filter(!xmin %in% c(data[["xmin"]], data[["xmax"]]))
+
+  segment <- dplyr::bind_rows(
+    segment_horizontal,
+    segment_vertical
+  ) %>%
+    dplyr::mutate(
+      geom = "segment",
+      colour = darkpink
+    )
+
+  dplyr::bind_rows(
+    segment,
+    rect
+  )
 }
