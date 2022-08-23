@@ -1,6 +1,5 @@
 ladder <- function(seed = NULL, width = 8.5, height = 11) {
-
-  if(!is.null(seed)) {
+  if (!is.null(seed)) {
     set.seed(seed)
   }
 
@@ -10,7 +9,7 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
   )
 
   outline_df <- original_df %>%
-    buncha_subdivisions(n = 15, min_size = 1) %>%
+    buncha_subdivisions(n = 10, min_size = 0.5) %>%
     dplyr::bind_rows() %>%
     dplyr::mutate(
       height = ymax - ymin,
@@ -22,14 +21,26 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
       "striped", "piano keys", "bricks", "checkerboard"
     ))
 
+  palette <- colours
+  # palette_style <- sample(c("mono", "duo", "multi"), 1,
+  #   prob = c(1, 1, 3)
+  # )
+  palette_style <- sample(c("mono", "duo"), 1)
+
+  palette <- switch(palette_style,
+    mono = sample(palette, 1),
+    duo = sample(palette, 2),
+    multi = palette
+  )
+
   options_df <- outline_df %>%
     dplyr::group_split(ymin) %>%
     purrr::map_dfr(function(data) {
       switch(data[["option"]],
-        "striped" = build_striped(data),
-        "piano keys" = build_piano_keys(data),
-        "checkerboard" = build_checkerboard(data),
-        "bricks" = build_bricks(data)
+        "striped" = build_striped(data, palette, palette_style),
+        "piano keys" = build_piano_keys(data, palette, palette_style),
+        "checkerboard" = build_checkerboard(data, palette, palette_style),
+        "bricks" = build_bricks(data, palette, palette_style)
       ) %>%
         dplyr::mutate(option = data[["option"]])
     })

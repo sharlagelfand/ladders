@@ -1,9 +1,11 @@
-red <- "#F14A14"
-orange <- "#FF9316"
-yellow <- "#FBC21B"
-darkpink <- "#F65A82"
-lightpink <- "#FD96B8"
-darkblue <- "#4A3DFB"
-lightblue <- "#8DD8F8"
-purple <- "#B38AD9"
-lightgreen <- "#C1F213"
+colours <- list(
+  red = "#F14A14",
+  orange = "#FF9316",
+  yellow = "#FBC21B",
+  darkpink = "#F65A82",
+  lightpink = "#FD96B8",
+  darkblue = "#4A3DFB",
+  lightblue = "#8DD8F8",
+  purple = "#B38AD9",
+  lightgreen = "#C1F213"
+)

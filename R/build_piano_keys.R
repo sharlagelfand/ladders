@@ -1,5 +1,33 @@
 #' @export
-build_piano_keys <- function(data) {
+build_piano_keys <- function(data, palette, palette_style) {
+
+  if (palette_style == "mono"){
+    tone_colour <- interval_colour <- palette
+    tone_outline <- interval_outline <- "black"
+  } else if (palette_style == "duo") {
+    style <- sample(c("solid intervals", "outline intervals", "colour tones"), 1)
+
+    if (true_or_false()) {
+      palette <- rev(palette)
+    }
+
+    tone_colour <- palette[[1]]
+    interval_colour <- palette[[2]]
+
+    if (style == "solid intervals") {
+      tone_outline <- "black"
+      interval_outline <- palette[[2]]
+    } else if (style == "outline intervals") {
+      tone_outline <- "black"
+      interval_outline <- "black"
+    } else if (style == "colour tones") {
+      tone_outline <- palette[[2]]
+      interval_outline <- palette[[2]]
+    }
+  } else if (palette_style == "multi") {
+
+  }
+
   tones <- dplyr::tibble(
     xmin = seq(data$xmin, data$xmax, length.out = sample(20:40, 1)),
     xmax = xmin
@@ -8,14 +36,14 @@ build_piano_keys <- function(data) {
       geom = "segment",
       ymin = data$ymin,
       ymax = data$ymax,
-      colour = darkpink
+      colour = tone_outline
     )
 
   tones_rect <- tones %>%
     dplyr::mutate(
       xmax = dplyr::lead(xmax),
       xmax = dplyr::coalesce(xmax, data$xmax),
-      fill = lightpink,
+      fill = tone_colour,
       colour = NA,
       geom = "rect"
     )
@@ -38,8 +66,8 @@ build_piano_keys <- function(data) {
       xmax = xmin + x_size * 2,
       ymin = data$ymax - (data$ymax - data$ymin) * 0.4,
       ymax = data$ymax,
-      fill = lightpink,
-      colour = darkpink
+      fill = interval_colour,
+      colour = interval_outline
     ) %>%
     dplyr::select(xmin, xmax, ymin, ymax, geom, fill, colour) %>%
     dplyr::mutate(order = 2)

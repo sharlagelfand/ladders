@@ -1,4 +1,4 @@
-build_bricks <- function(data) {
+build_bricks <- function(data, palette, palette_style) {
   n_rows <- sample(3:6, 1)
   y_size <- (data[["ymax"]] - data[["ymin"]]) / n_rows
   x_size <- y_size * 2
@@ -35,7 +35,7 @@ build_bricks <- function(data) {
       xmax = ifelse(xmax > data[["xmax"]], data[["xmax"]], xmax)
     ) %>%
     dplyr::mutate(
-      fill = lightpink,
+      fill = colours[["lightpink"]],
       colour = NA_character_,
       geom = "rect"
     )
@@ -60,7 +60,7 @@ build_bricks <- function(data) {
   ) %>%
     dplyr::mutate(
       geom = "segment",
-      colour = darkpink
+      colour = colours[["darkpink"]]
     )
 
   dplyr::bind_rows(

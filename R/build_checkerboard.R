@@ -1,5 +1,5 @@
 #' @export
-build_checkerboard <- function(data) {
+build_checkerboard <- function(data, palette, palette_style) {
   x <- dplyr::tibble(
     xmin = seq(data$xmin, data$xmax, length.out = sample(20:30, 1)),
     xmax = dplyr::lead(xmin),
@@ -21,7 +21,7 @@ build_checkerboard <- function(data) {
     ) %>%
     dplyr::ungroup() %>%
     dplyr::filter(!is.na(ymax)) %>%
-    dplyr::mutate(fill = ifelse(fill, darkpink, lightpink)) %>%
+    dplyr::mutate(fill = ifelse(fill, colours[["darkpink"]], colours[["lightpink"]])) %>%
     dplyr::select(xmin, xmax, ymin, ymax, fill) %>%
     dplyr::mutate(geom = "rect")
 }
