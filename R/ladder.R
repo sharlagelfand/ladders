@@ -53,21 +53,25 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
   ggplot2::ggplot() +
     ggplot2::geom_rect(
       data = options_df %>% dplyr::filter(geom == "rect", is.na(order)),
-      ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill, colour = colour)
+      ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill, colour = colour),
+      na.rm = TRUE
     ) +
     ggplot2::geom_segment(
       data = options_df %>% dplyr::filter(geom == "segment", is.na(order)),
       ggplot2::aes(x = xmin, xend = xmax, y = ymin, yend = ymax, colour = colour),
-      size = 0.4
+      size = 0.4,
+      na.rm = TRUE
     ) +
     ggplot2::geom_rect(
       data = options_df %>% dplyr::filter(geom == "rect", !is.na(order)),
-      ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill, colour = colour)
+      ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill, colour = colour),
+      na.rm = TRUE
     ) +
     ggplot2::geom_segment(
       data = options_df %>% dplyr::filter(geom == "segment", !is.na(order)),
       ggplot2::aes(x = xmin, xend = xmax, y = ymin, yend = ymax, colour = colour),
-      size = 0.25
+      size = 0.25,
+      na.rm = TRUE
     ) +
     ggplot2::geom_rect(
       data = outline_df,
