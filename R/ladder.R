@@ -83,5 +83,6 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
     ggplot2::scale_colour_identity() +
     ggplot2::scale_fill_identity() +
     ggplot2::coord_fixed() +
-    ggplot2::theme_void()
+    ggplot2::theme_void() +
+    ggplot2::theme(plot.background = ggplot2::element_rect(fill = colours[["linen"]], colour = colours[["linen"]]))
 }
