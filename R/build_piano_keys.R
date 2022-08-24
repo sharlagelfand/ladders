@@ -80,15 +80,40 @@ build_piano_keys <- function(data, palette, palette_style) {
     dplyr::select(xmin, xmax, ymin, ymax, geom, fill, colour) %>%
     dplyr::mutate(order = 2)
 
+  # Optionally have keys come from above and below
+  if (true_or_false()) {
+    intervals <- intervals %>%
+      dplyr::rowwise() %>%
+      dplyr::mutate(
+        flip_key = true_or_false(),
+        ymin_new = ifelse(flip_key & ymin, data[["ymin"]], ymin),
+        ymax_new = ifelse(flip_key, ymin, ymax)
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(-ymin, -ymax) %>%
+      dplyr::rename(ymin = ymin_new, ymax = ymax_new)
+  } else {
+    intervals <- intervals %>%
+      dplyr::mutate(flip_key = FALSE)
+  }
+
   tones_segment <- dplyr::bind_rows(
     intervals %>% dplyr::select(xmin, ymin, ymax, order) %>% dplyr::mutate(xmax = xmin),
     intervals %>% dplyr::select(xmax, ymin, ymax, order) %>% dplyr::mutate(xmin = xmax),
-    intervals %>% dplyr::select(xmax, xmin, ymin, order) %>% dplyr::mutate(ymax = ymin),
+    intervals %>%
+      dplyr::select(xmax, xmin, ymin, ymax, order, flip_key) %>%
+      dplyr::mutate(
+        ymin_new = ifelse(flip_key, ymax, ymin),
+        ymax_new = ifelse(flip_key, ymax, ymin)
+      ) %>%
+      dplyr::select(-ymin, -ymax) %>%
+      dplyr::rename(ymin = ymin_new, ymax = ymax_new),
   ) %>%
     dplyr::mutate(
       geom = "segment",
       colour = interval_outline
-    )
+    ) %>%
+    dplyr::select(-flip_key)
 
   dplyr::bind_rows(
     tones %>%
