@@ -16,7 +16,8 @@ banned_combos <- list(
   c("darkgreen", "denim"),
   c("darkgreen", "flame"),
   c("darkteal", "denim"),
-  c("butter", "grassgreen")
+  c("butter", "grassgreen"),
+  c("blurple", "darkteal")
 )
 
 banned_combos <- lapply(banned_combos, paste0, collapse = "")
