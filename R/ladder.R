@@ -23,6 +23,7 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
     ))
 
   palette <- colours
+  palette <- unlist(palette)
   # palette_style <- sample(c("mono", "duo", "multi"), 1,
   #   prob = c(1, 1, 3)
   # )

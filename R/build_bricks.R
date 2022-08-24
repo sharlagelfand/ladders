@@ -35,7 +35,6 @@ build_bricks <- function(data, palette, palette_style) {
       xmax = ifelse(xmax > data[["xmax"]], data[["xmax"]], xmax)
     ) %>%
     dplyr::mutate(
-      fill = colours[["lightpink"]],
       colour = NA_character_,
       geom = "rect"
     )
@@ -59,8 +58,60 @@ build_bricks <- function(data, palette, palette_style) {
     segment_vertical
   ) %>%
     dplyr::mutate(
-      geom = "segment",
-      colour = colours[["darkpink"]]
+      geom = "segment"
+    )
+
+
+  if (palette_style == "mono") {
+    palette <- c(palette, "black")
+
+    if (true_or_false()) {
+      palette <- rev(palette)
+    }
+
+    rect_colour <- palette[[1]]
+    segment_colour <- palette[[2]]
+
+    if (true_or_false()) {
+      rect_colour <- sample(palette, nrow(rect), replace = TRUE)
+    }
+  } else if (palette_style == "duo") {
+
+    if (true_or_false()) {
+      palette <- rev(palette)
+    }
+
+    style <- sample(c("black outline", "colour outline"), 1)
+
+    if (style == "black outline") {
+      segment_colour <- "black"
+
+      fill_method <- sample(c("random", "perlin"), 1)
+
+      if (fill_method == "random") {
+        rect_colour <- sample(palette, nrow(rect), replace = TRUE)
+      } else if (fill_method == "perlin") {
+        rect_colour <- rect %>%
+          dplyr::select(x = xmin, y = ymin) %>%
+          generate_noise("perlin", runif(1, 0.1, 3), seed = NULL) %>%
+          option_from_noise(palette) %>%
+          dplyr::pull(option)
+      }
+
+    } else if (style == "colour outline") {
+      rect_colour <- palette[[1]]
+      segment_colour <- palette[[2]]
+    }
+  }
+
+  segment <- segment %>%
+    dplyr::mutate(
+      colour = segment_colour
+    )
+
+  rect <- rect %>%
+    dplyr::mutate(
+      fill = rect_colour
     )
 
   dplyr::bind_rows(
