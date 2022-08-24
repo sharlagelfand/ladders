@@ -61,13 +61,18 @@ build_piano_keys <- function(data, palette, palette_style) {
   intervals <- tones %>%
     dplyr::mutate(x_prev = dplyr::lag(xmin), x_next = dplyr::lead(xmin)) %>%
     dplyr::filter(noise_ntile %in% sample(1:10, 3)) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      interval_prop = runif(1, 0.3, 0.7)
+    ) %>%
+    dplyr::ungroup() %>%
     dplyr::mutate(
       geom = "rect",
       x_size = pmin(xmin - x_prev, x_next - xmin),
       x_size = x_size / 3,
       xmin = xmin - x_size,
       xmax = xmin + x_size * 2,
-      ymin = data$ymax - (data$ymax - data$ymin) * 0.4,
+      ymin = data$ymax - (data$ymax - data$ymin) * interval_prop,
       ymax = data$ymax,
       fill = interval_colour,
       colour = NA
