@@ -11,7 +11,7 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
 
   outline_df <- original_df %>%
     buncha_subdivisions(n = 10, min_size = 0.5) %>%
-    dplyr::bind_rows() %>%
+    dplyr::bind_rows(.id = "id") %>%
     dplyr::mutate(
       height = ymax - ymin,
       x = xmin, y = ymin
@@ -39,7 +39,7 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
   }
 
   options_df <- outline_df %>%
-    dplyr::group_split(ymin) %>%
+    dplyr::group_split(id) %>%
     purrr::map_dfr(function(data) {
       switch(data[["option"]],
         "striped" = build_striped(data, palette, palette_style),
@@ -57,7 +57,8 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
     ) +
     ggplot2::geom_segment(
       data = options_df %>% dplyr::filter(geom == "segment", is.na(order)),
-      ggplot2::aes(x = xmin, xend = xmax, y = ymin, yend = ymax, colour = colour)
+      ggplot2::aes(x = xmin, xend = xmax, y = ymin, yend = ymax, colour = colour),
+      size = 0.4
     ) +
     ggplot2::geom_rect(
       data = options_df %>% dplyr::filter(geom == "rect", !is.na(order)),
@@ -65,7 +66,8 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
     ) +
     ggplot2::geom_segment(
       data = options_df %>% dplyr::filter(geom == "segment", !is.na(order)),
-      ggplot2::aes(x = xmin, xend = xmax, y = ymin, yend = ymax, colour = colour)
+      ggplot2::aes(x = xmin, xend = xmax, y = ymin, yend = ymax, colour = colour),
+      size = 0.25
     ) +
     ggplot2::geom_rect(
       data = outline_df,

@@ -1,7 +1,14 @@
 #' @export
 build_striped <- function(data, palette, palette_style) {
+
+  if (data$xmax - data$xmin < 2) {
+    rect_sample <- 5:15
+  } else {
+    rect_sample <- 20:50
+  }
+
   rect <- dplyr::tibble(
-    xmin = seq(data$xmin, data$xmax, length.out = sample(20:50, 1)),
+    xmin = seq(data$xmin, data$xmax, length.out = sample(rect_sample, 1)),
     xmax = dplyr::lead(xmin)
   ) %>%
     dplyr::mutate(

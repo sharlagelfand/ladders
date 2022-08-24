@@ -31,8 +31,14 @@ build_piano_keys <- function(data, palette, palette_style) {
 
   }
 
+  if (data$xmax - data$xmin < 2) {
+    tones_sample <- 5:15
+  } else {
+    tones_sample <- 20:40
+  }
+
   tones <- dplyr::tibble(
-    xmin = seq(data$xmin, data$xmax, length.out = sample(20:40, 1)),
+    xmin = seq(data$xmin, data$xmax, length.out = sample(tones_sample, 1)),
     xmax = xmin
   ) %>%
     dplyr::mutate(
