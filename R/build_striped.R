@@ -11,6 +11,17 @@ build_striped <- function(data, palette, palette_style) {
       ymax = data$ymax
     )
 
+  segment <- dplyr::bind_rows(
+    rect %>%
+      dplyr::select(xmin, ymin, ymax) %>% dplyr::mutate(xmax = xmin),
+    rect %>%
+      dplyr::select(xmax, ymin, ymax) %>% dplyr::mutate(xmin = xmax)
+  ) %>%
+    dplyr::mutate(geom = "segment", colour = "black") %>%
+    dplyr::arrange(xmin) %>%
+    dplyr::distinct() %>%
+    dplyr::filter(!dplyr::row_number() %in% c(1, dplyr::n()))
+
   if (palette_style == "mono") {
     palette <- c("black", palette)
 
@@ -53,8 +64,20 @@ build_striped <- function(data, palette, palette_style) {
         rect <- rect %>%
           dplyr::mutate(fill = ifelse(id %% 2 != 0, fill, "black"))
       }
+
+      if (true_or_false()) {
+        rect <- rect %>%
+          dplyr::mutate(fill = ifelse(fill == "black", NA_character_, fill)) %>%
+          tidyr::fill(fill, .direction = "downup")
+
+        segment <- segment %>%
+          dplyr::sample_frac(runif(1, 0.5, 0.7))
+      }
     }
   }
 
-  rect
+  dplyr::bind_rows(
+    rect,
+    segment
+  )
 }
