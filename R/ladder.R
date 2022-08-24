@@ -1,5 +1,5 @@
 #' @export
-ladder <- function(seed = NULL, width = 8.5, height = 11) {
+ladder <- function(seed = NULL, width = 11, height = 8.5) {
   if (!is.null(seed)) {
     set.seed(seed)
   }
