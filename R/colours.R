@@ -1,11 +1,11 @@
 colours <- list(
-  red = "#F14A14",
-  orange = "#FF9316",
-  yellow = "#FBC21B",
-  darkpink = "#F65A82",
-  lightpink = "#FD96B8",
-  darkblue = "#4A3DFB",
-  lightblue = "#8DD8F8",
-  purple = "#B38AD9",
-  lightgreen = "#C1F213"
+  darkgreen = "#297045",
+  darkteal = "#204E4A",
+  grassgreen = "#81C14B",
+  flame = "#E16036",
+  linen = "#F7EDE2",
+  denim = "#3D518C",
+  steel = "#ACBED8",
+  grounds = "#1C2826",
+  blurple = "#39375B"
 )
