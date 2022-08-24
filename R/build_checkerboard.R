@@ -12,7 +12,7 @@ build_checkerboard <- function(data, palette, palette_style) {
     ymin <- c(ymin, data$ymax)
   }
 
-  tidyr::crossing(xmin = x$xmin, ymin = ymin) %>%
+  df <- tidyr::crossing(xmin = x$xmin, ymin = ymin) %>%
     dplyr::left_join(x, by = "xmin") %>%
     dplyr::group_by(xmin) %>%
     dplyr::mutate(
@@ -20,8 +20,22 @@ build_checkerboard <- function(data, palette, palette_style) {
       ymax = dplyr::lead(ymin)
     ) %>%
     dplyr::ungroup() %>%
-    dplyr::filter(!is.na(ymax)) %>%
-    dplyr::mutate(fill = ifelse(fill, colours[["darkpink"]], colours[["lightpink"]])) %>%
-    dplyr::select(xmin, xmax, ymin, ymax, fill) %>%
-    dplyr::mutate(geom = "rect")
+    dplyr::filter(!is.na(ymax))
+
+  if (palette_style == "mono") {
+    palette <- c(palette, "black")
+  }
+
+  if (palette_style %in% c("mono", "duo")) {
+    if (true_or_false()) {
+      palette <- rev(palette)
+    }
+
+    df <- df %>%
+      dplyr::mutate(fill = ifelse(fill, palette[[1]], palette[[2]])) %>%
+      dplyr::select(xmin, xmax, ymin, ymax, fill) %>%
+      dplyr::mutate(geom = "rect")
+  }
+
+  df
 }

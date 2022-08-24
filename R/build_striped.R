@@ -12,9 +12,15 @@ build_striped <- function(data, palette, palette_style) {
     )
 
   if (palette_style == "mono") {
+    palette <- c("black", palette)
+
+    if (true_or_false()) {
+      palette <- rev(palette)
+    }
+
     rect <- rect %>%
       dplyr::mutate(
-        fill = ifelse(dplyr::row_number() %% 2 == 0, palette, "black")
+        fill = ifelse(dplyr::row_number() %% 2 == 0, palette[[1]], palette[[2]])
       )
   } else if (palette_style == "duo") {
     style <- sample(c("alternating", "blocks"), 1)
