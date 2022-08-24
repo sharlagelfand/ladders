@@ -31,7 +31,9 @@ build_piano_keys <- function(data, palette, palette_style) {
 
   }
 
-  if (data$xmax - data$xmin < 2) {
+  if (data$xmax - data$xmin < 0.75) {
+    tones_sample <- 3:8
+  } else if (data$xmax - data$xmin < 2) {
     tones_sample <- 5:15
   } else {
     tones_sample <- 20:40

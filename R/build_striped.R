@@ -1,6 +1,5 @@
 #' @export
 build_striped <- function(data, palette, palette_style) {
-
   if (data$xmax - data$xmin < 2) {
     rect_sample <- 5:15
   } else {
@@ -57,29 +56,26 @@ build_striped <- function(data, palette, palette_style) {
       block_starts <- sample(1:nrow(rect), n_blocks) %>%
         sort()
       block_starts <- dplyr::tibble(id = block_starts) %>%
-        dplyr::mutate(fill = ifelse(dplyr::row_number() %% 2 == 0, palette[[1]], palette[[2]]))
+        dplyr::mutate(
+          block_section = dplyr::row_number(),
+          fill = ifelse(block_section %% 2 == 0, palette[[1]], palette[[2]])
+        )
 
       rect <- rect %>%
         dplyr::mutate(id = dplyr::row_number()) %>%
         dplyr::left_join(block_starts, by = "id") %>%
-        tidyr::fill(fill, .direction = "downup")
+        tidyr::fill(fill, block_section, .direction = "downup")
 
-      if (true_or_false()) {
-        rect <- rect %>%
-          dplyr::mutate(fill = ifelse(id %% 2 == 0, fill, "black"))
-      } else {
-        rect <- rect %>%
-          dplyr::mutate(fill = ifelse(id %% 2 != 0, fill, "black"))
-      }
+      rect <- rect %>%
+        dplyr::group_by(block_section, fill, geom) %>%
+        dplyr::summarise(
+          xmin = min(xmin), xmax = max(xmax),
+          ymin = min(ymin), ymax = max(ymax)
+        ) %>%
+        dplyr::ungroup()
 
-      if (true_or_false()) {
-        rect <- rect %>%
-          dplyr::mutate(fill = ifelse(fill == "black", NA_character_, fill)) %>%
-          tidyr::fill(fill, .direction = "downup")
-
-        segment <- segment %>%
-          dplyr::sample_frac(runif(1, 0.5, 0.7))
-      }
+      segment <- segment %>%
+        dplyr::sample_frac(runif(1, 0.7, 0.95))
     }
   }
 
