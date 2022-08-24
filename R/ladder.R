@@ -22,18 +22,21 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
       "striped", "piano keys", "bricks", "checkerboard"
     ))
 
-  palette <- colours
-  palette <- unlist(palette)
   # palette_style <- sample(c("mono", "duo", "multi"), 1,
   #   prob = c(1, 1, 3)
   # )
   palette_style <- sample(c("mono", "duo"), 1, prob = c(1, 3))
 
   palette <- switch(palette_style,
-    mono = sample(palette, 1)[[1]],
-    duo = sample(palette, 2),
-    multi = palette
+    mono = sample(colours, 1)[[1]],
+    duo = sample(colours, 2),
+    multi = colours
   )
+
+  while (any(paste0(sort(names(palette)), collapse = "") == banned_combos) &
+    palette_style == "duo") {
+    palette <- sample(colours, 2)
+  }
 
   options_df <- outline_df %>%
     dplyr::group_split(ymin) %>%

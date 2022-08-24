@@ -1,4 +1,4 @@
-colours <- list(
+colours <- c(
   darkgreen = "#297045",
   darkteal = "#204E4A",
   grassgreen = "#81C14B",
@@ -10,3 +10,13 @@ colours <- list(
   blurple = "#39375B",
   butter = "#E9B44C"
 )
+
+banned_combos <- list(
+  c("butter", "steel"),
+  c("darkgreen", "denim"),
+  c("darkgreen", "flame"),
+  c("darkteal", "denim"),
+  c("butter", "grassgreen")
+)
+
+banned_combos <- lapply(banned_combos, paste0, collapse = "")
