@@ -1,3 +1,4 @@
+#' @export
 ladder <- function(seed = NULL, width = 8.5, height = 11) {
   if (!is.null(seed)) {
     set.seed(seed)
