@@ -7,5 +7,6 @@ colours <- list(
   denim = "#3D518C",
   steel = "#ACBED8",
   grounds = "#1C2826",
-  blurple = "#39375B"
+  blurple = "#39375B",
+  butter = "#E9B44C"
 )
