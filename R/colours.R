@@ -2,7 +2,7 @@ colours <- c(
   darkgreen = "#297045",
   darkteal = "#204E4A",
   grassgreen = "#81C14B",
-  flame = "#E16036",
+  rhubarb = "#D34F73",
   linen = "#F7EDE2",
   denim = "#3D518C",
   steel = "#ACBED8",
@@ -14,7 +14,6 @@ colours <- c(
 banned_combos <- list(
   c("butter", "steel"),
   c("darkgreen", "denim"),
-  c("darkgreen", "flame"),
   c("darkteal", "denim"),
   c("butter", "grassgreen"),
   c("blurple", "darkteal"),
