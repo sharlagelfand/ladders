@@ -12,13 +12,13 @@ chute <- function(ladder, file) {
     filename = file, plot = ladder,
     width = xlim[[2]] - xlim[[1]],
     height = ylim[[2]] - ylim[[1]],
-    dpi = 300
+    dpi = 200
   )
 
   img <- magick::image_read(file)
 
   img <- img %>%
-    magick::image_noise("Laplacian")
+    image_partial_noise(0.75, "Laplacian")
 
   magick::image_write(img, file)
 }
