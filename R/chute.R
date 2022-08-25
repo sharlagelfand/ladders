@@ -16,10 +16,10 @@ chute <- function(ladder, file) {
     dpi = 300
   )
 
-  img <- magick::image_read(file)
+  # img <- magick::image_read(file)
 
-  img <- img %>%
-    image_partial_noise()
+  # img <- img %>%
+    # image_partial_noise()
 
-  magick::image_write(img, file)
+  # magick::image_write(img, file)
 }
