@@ -22,19 +22,9 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
       "striped", "piano keys", "bricks", "checkerboard"
     ))
 
-  # palette_style <- sample(c("mono", "duo", "multi"), 1,
-  #   prob = c(1, 1, 3)
-  # )
-  palette_style <- sample(c("mono", "duo"), 1, prob = c(1, 10))
+  palette <- sample(colours, 2)
 
-  palette <- switch(palette_style,
-    mono = sample(colours, 1)[[1]],
-    duo = sample(colours, 2),
-    multi = colours
-  )
-
-  while (any(paste0(sort(names(palette)), collapse = "") == banned_combos) &
-    palette_style == "duo") {
+  while (any(paste0(sort(names(palette)), collapse = "") == banned_combos)) {
     palette <- sample(colours, 2)
   }
 
@@ -42,10 +32,10 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
     dplyr::group_split(id) %>%
     purrr::map_dfr(function(data) {
       switch(data[["option"]],
-        "striped" = build_striped(data, palette, palette_style),
-        "piano keys" = build_piano_keys(data, palette, palette_style),
-        "checkerboard" = build_checkerboard(data, palette, palette_style),
-        "bricks" = build_bricks(data, palette, palette_style)
+        "striped" = build_striped(data, palette),
+        "piano keys" = build_piano_keys(data, palette),
+        "checkerboard" = build_checkerboard(data, palette),
+        "bricks" = build_bricks(data, palette)
       ) %>%
         dplyr::mutate(option = data[["option"]])
     })

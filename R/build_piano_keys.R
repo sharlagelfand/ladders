@@ -1,35 +1,23 @@
 #' @export
-build_piano_keys <- function(data, palette, palette_style) {
+build_piano_keys <- function(data, palette) {
+  style <- sample(c("solid intervals", "outline intervals", "colour tones"), 1)
 
-  if (palette_style == "mono") {
-    tone_colour <- interval_colour <- palette
-    tone_outline <- interval_outline <- "black"
+  if (true_or_false()) {
+    palette <- rev(palette)
+  }
 
-    if (true_or_false()) {
-      interval_colour <- "black"
-    }
-  } else if (palette_style == "duo") {
-    style <- sample(c("solid intervals", "outline intervals", "colour tones"), 1)
+  tone_colour <- palette[[1]]
+  interval_colour <- palette[[2]]
 
-    if (true_or_false()) {
-      palette <- rev(palette)
-    }
-
-    tone_colour <- palette[[1]]
-    interval_colour <- palette[[2]]
-
-    if (style == "solid intervals") {
-      tone_outline <- "black"
-      interval_outline <- palette[[2]]
-    } else if (style == "outline intervals") {
-      tone_outline <- "black"
-      interval_outline <- "black"
-    } else if (style == "colour tones") {
-      tone_outline <- palette[[2]]
-      interval_outline <- palette[[2]]
-    }
-  } else if (palette_style == "multi") {
-
+  if (style == "solid intervals") {
+    tone_outline <- "black"
+    interval_outline <- palette[[2]]
+  } else if (style == "outline intervals") {
+    tone_outline <- "black"
+    interval_outline <- "black"
+  } else if (style == "colour tones") {
+    tone_outline <- palette[[2]]
+    interval_outline <- palette[[2]]
   }
 
   if (data$xmax - data$xmin < 0.75) {

@@ -1,5 +1,5 @@
 #' @export
-build_checkerboard <- function(data, palette, palette_style) {
+build_checkerboard <- function(data, palette) {
   x <- dplyr::tibble(
     xmin = seq(data$xmin, data$xmax, length.out = sample(20:30, 1)),
     xmax = dplyr::lead(xmin),
@@ -22,20 +22,14 @@ build_checkerboard <- function(data, palette, palette_style) {
     dplyr::ungroup() %>%
     dplyr::filter(!is.na(ymax))
 
-  if (palette_style == "mono") {
-    palette <- c(palette, "black")
+  if (true_or_false()) {
+    palette <- rev(palette)
   }
 
-  if (palette_style %in% c("mono", "duo")) {
-    if (true_or_false()) {
-      palette <- rev(palette)
-    }
-
-    df <- df %>%
-      dplyr::mutate(fill = ifelse(fill, palette[[1]], palette[[2]])) %>%
-      dplyr::select(xmin, xmax, ymin, ymax, fill) %>%
-      dplyr::mutate(geom = "rect")
-  }
+  df <- df %>%
+    dplyr::mutate(fill = ifelse(fill, palette[[1]], palette[[2]])) %>%
+    dplyr::select(xmin, xmax, ymin, ymax, fill) %>%
+    dplyr::mutate(geom = "rect")
 
   df
 }

@@ -11,6 +11,8 @@ colours <- c(
   butter = "#E9B44C"
 )
 
+# colours <- plotwidgets::col2hsl(colours)
+
 banned_combos <- list(
   c("butter", "steel"),
   c("darkgreen", "denim"),

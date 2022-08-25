@@ -1,4 +1,4 @@
-build_bricks <- function(data, palette, palette_style) {
+build_bricks <- function(data, palette) {
   n_rows <- sample(3:6, 1)
   y_size <- (data[["ymax"]] - data[["ymin"]]) / n_rows
   x_size <- y_size * 2
@@ -61,47 +61,29 @@ build_bricks <- function(data, palette, palette_style) {
       geom = "segment"
     )
 
+  if (true_or_false()) {
+    palette <- rev(palette)
+  }
 
-  if (palette_style == "mono") {
-    palette <- c(palette, "black")
+  style <- sample(c("black outline", "colour outline"), 1)
 
-    if (true_or_false()) {
-      palette <- rev(palette)
+  if (style == "black outline") {
+    segment_colour <- "black"
+
+    fill_method <- sample(c("random", "perlin"), 1)
+
+    if (fill_method == "random") {
+      rect_colour <- sample(palette, nrow(rect), replace = TRUE)
+    } else if (fill_method == "perlin") {
+      rect_colour <- rect %>%
+        dplyr::select(x = xmin, y = ymin) %>%
+        generate_noise("perlin", runif(1, 0.1, 3), seed = NULL) %>%
+        option_from_noise(palette) %>%
+        dplyr::pull(option)
     }
-
+  } else if (style == "colour outline") {
     rect_colour <- palette[[1]]
     segment_colour <- palette[[2]]
-
-    if (true_or_false()) {
-      rect_colour <- sample(palette, nrow(rect), replace = TRUE)
-    }
-  } else if (palette_style == "duo") {
-
-    if (true_or_false()) {
-      palette <- rev(palette)
-    }
-
-    style <- sample(c("black outline", "colour outline"), 1)
-
-    if (style == "black outline") {
-      segment_colour <- "black"
-
-      fill_method <- sample(c("random", "perlin"), 1)
-
-      if (fill_method == "random") {
-        rect_colour <- sample(palette, nrow(rect), replace = TRUE)
-      } else if (fill_method == "perlin") {
-        rect_colour <- rect %>%
-          dplyr::select(x = xmin, y = ymin) %>%
-          generate_noise("perlin", runif(1, 0.1, 3), seed = NULL) %>%
-          option_from_noise(palette) %>%
-          dplyr::pull(option)
-      }
-
-    } else if (style == "colour outline") {
-      rect_colour <- palette[[1]]
-      segment_colour <- palette[[2]]
-    }
   }
 
   segment <- segment %>%
