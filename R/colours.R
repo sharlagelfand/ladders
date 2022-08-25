@@ -8,7 +8,8 @@ colours <- c(
   steel = "#ACBED8",
   grounds = "#1C2826",
   blurple = "#39375B",
-  butter = "#D7AF60"
+  butter = "#EBE0C6",
+  mauve = "#d3a3b4"
 )
 
 colours_hsl <- plotwidgets::col2hsl(colours) %>%
@@ -18,16 +19,35 @@ colours_hsl <- plotwidgets::col2hsl(colours) %>%
 
 banned_combos <- list(
   c("butter", "steel"),
-  c("darkgreen", "denim"),
-  c("darkteal", "denim"),
-  c("darkteal", "grounds"),
   c("butter", "grassgreen"),
-  c("blurple", "darkteal"),
   c("grassgreen", "steel"),
-  c("blurple", "grounds"),
+  c("grassgreen", "rhubarb"),
   c("butter", "rhubarb"),
   c("denim", "rhubarb"),
-  c("darkgreen", "rhubarb")
+  c("blurple", "denim"),
+  c("darkgreen", "darkteal"),
+  c("grounds", "rhubarb"),
+  c("rhubarb", "steel"),
+  c("denim", "grounds"),
+  c("grassgreen", "mauve"),
+  c("mauve", "steel"),
+  c("darkgreen", "mauve")
+)
+
+really_banned_combos <- list(
+  c("darkteal", "denim"),
+  c("blurple", "darkgreen"),
+  c("darkgreen", "denim"),
+  c("darkteal", "grounds"),
+  c("blurple", "darkteal"),
+  c("blurple", "grounds"),
+  c("darkgreen", "rhubarb"),
+  c("blurple", "grassgreen"),
+  c("blurple", "darkgreen"),
+  c("darkgreen", "denim"),
+  c("grassgreen", "rhubarb")
 )
 
 banned_combos <- lapply(banned_combos, paste0, collapse = "")
+
+really_banned_combos <- lapply(really_banned_combos, paste0, collapse = "")

@@ -24,6 +24,12 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
 
   palette <- sample(colours, 2)
 
+  # browser()
+
+  while (any(paste0(sort(names(palette)), collapse = "") == really_banned_combos)) {
+    palette <- sample(colours, 2)
+  }
+
   if (any(paste0(sort(names(palette)), collapse = "") == banned_combos)) {
     palette_original <- palette
 
@@ -65,6 +71,8 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
         dplyr::mutate(option = data[["option"]])
     })
 
+  background_colour <- "#f9f5eb"
+
   ggplot2::ggplot() +
     ggplot2::geom_rect(
       data = options_df %>% dplyr::filter(geom == "rect", is.na(order)),
@@ -99,5 +107,5 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
     ggplot2::scale_fill_identity() +
     ggplot2::coord_fixed() +
     ggplot2::theme_void() +
-    ggplot2::theme(plot.background = ggplot2::element_rect(fill = "#F4F4F8", colour = "#F4F4F8"))
+    ggplot2::theme(plot.background = ggplot2::element_rect(fill = background_colour, colour = background_colour))
 }

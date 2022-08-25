@@ -5,7 +5,6 @@
 #'
 #' @export
 chute <- function(ladder, file) {
-
   xlim <- ggplot2::layer_scales(ladder)$x$range$range
   ylim <- ggplot2::layer_scales(ladder)$y$range$range
 
@@ -16,10 +15,10 @@ chute <- function(ladder, file) {
     dpi = 300
   )
 
-  # img <- magick::image_read(file)
+  img <- magick::image_read(file)
 
-  # img <- img %>%
-    # image_partial_noise()
+  img <- img %>%
+    magick::image_noise("Laplacian")
 
-  # magick::image_write(img, file)
+  magick::image_write(img, file)
 }
