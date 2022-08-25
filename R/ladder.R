@@ -25,7 +25,7 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
   # palette_style <- sample(c("mono", "duo", "multi"), 1,
   #   prob = c(1, 1, 3)
   # )
-  palette_style <- sample(c("mono", "duo"), 1, prob = c(1, 3))
+  palette_style <- sample(c("mono", "duo"), 1, prob = c(1, 10))
 
   palette <- switch(palette_style,
     mono = sample(colours, 1)[[1]],
@@ -84,5 +84,5 @@ ladder <- function(seed = NULL, width = 8.5, height = 11) {
     ggplot2::scale_fill_identity() +
     ggplot2::coord_fixed() +
     ggplot2::theme_void() +
-    ggplot2::theme(plot.background = ggplot2::element_rect(fill = colours[["linen"]], colour = colours[["linen"]]))
+    ggplot2::theme(plot.background = ggplot2::element_rect(fill = "#F4F4F8", colour = "#F4F4F8"))
 }

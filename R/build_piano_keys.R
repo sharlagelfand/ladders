@@ -1,5 +1,6 @@
 #' @export
 build_piano_keys <- function(data, palette, palette_style) {
+
   if (palette_style == "mono") {
     tone_colour <- interval_colour <- palette
     tone_outline <- interval_outline <- "black"
@@ -68,7 +69,7 @@ build_piano_keys <- function(data, palette, palette_style) {
 
   intervals <- tones %>%
     dplyr::mutate(x_prev = dplyr::lag(xmin), x_next = dplyr::lead(xmin)) %>%
-    dplyr::filter(noise_ntile %in% sample(1:10, 3)) %>%
+    dplyr::filter(noise_ntile %in% sample(unique(tones[["noise_ntile"]]), 3, replace = TRUE)) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(
       interval_prop = runif(1, 0.3, 0.7)

@@ -53,7 +53,8 @@ build_striped <- function(data, palette, palette_style) {
         )
     } else if (style == "blocks") {
       n_blocks <- sample(2:10, 1)
-      block_starts <- sample(1:nrow(rect), n_blocks) %>%
+      block_starts <- sample(1:nrow(rect), n_blocks, replace = TRUE) %>%
+        unique() %>%
         sort()
       block_starts <- dplyr::tibble(id = block_starts) %>%
         dplyr::mutate(
